@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./media/northstarrTransparent_better.png">
+    <title>NORTHSTARR</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/48329522a0.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        margin: 0;
+        background-color: black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .social-icons {
+        position: fixed;
+        bottom: 20px;
+        display: flex;
+        justify-content: space-around;
+        width: 80%;
+      }
+      .social-icons a {
+        color: #ffffff;
+        font-size: 32px;
+        text-decoration: none;
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+      .social-icons a:hover {
+        transform: scale(1.2);
+        color: #ffa500;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="canvas"></div>
+    <div class="social-icons">
+      <a href="https://github.com/killrhys" target="_blank"
+        ><i class="fab fa-github"></i
+      ></a>
+      <a href="https://x.com/buneatcarrot" target="_blank"
+        ><i class="fa-brands fa-x-twitter"></i
+      ></a>
+      <a href="https://bsky.app/profile/northstarr.dev" target="_blank"
+        ><i class="fa-brands fa-bluesky"></i
+      ></a>
+      <a href="https://discord.com/users/732679790196293742" target="_blank"
+        ><i class="fab fa-discord"></i
+      ></a>
+    </div>
+    <script>
+      const canvas = document.getElementById("canvas");
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer({ alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      canvas.appendChild(renderer.domElement);
+
+      const loader = new THREE.TextureLoader();
+      const texture = loader.load(
+        "./media/northstarrTransparent_white.png" 
+      );
+
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        side: THREE.DoubleSide, 
+        transparent: true, 
+        alphaTest: 0.5, 
+      });
+
+      const planeGeometry = new THREE.PlaneGeometry(5, 5);
+      const plane = new THREE.Mesh(planeGeometry, material);
+
+      scene.add(plane);
+
+      camera.position.z = 10;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        plane.rotation.y += 0.02; 
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      window.addEventListener("resize", () => {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+      });
+    </script>
+  </body>
+</html>
